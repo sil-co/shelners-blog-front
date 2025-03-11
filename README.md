@@ -1,3 +1,9 @@
+Frontend side of Shelner's Blog
+
+## Uses
+- React-router v7
+- Tailwindcss 
+
 # Welcome to React Router!
 
 A modern, production-ready template for building full-stack React applications using React Router.
