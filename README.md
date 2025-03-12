@@ -1,3 +1,7 @@
+## Entire Project
+- [Shelner's Blog](https://github.com/sil-co/shelners-blog) 
+
+## About
 Frontend side of Shelner's Blog
 
 ## Uses
