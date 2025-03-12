@@ -30,7 +30,7 @@ export default function Login() {
     }
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="flex justify-center items-center min-h-[calc(100vh-200px)]">
             <div className="bg-white p-8 shadow-lg rounded-lg max-w-sm w-full">
                 <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
@@ -49,7 +49,7 @@ export default function Login() {
                         <label className="block text-gray-700">Password</label>
                         <input
                             type="password"
-                            className="w-full px-4  py-2 border rounded-lg focus:ring focus:ring-blue-300"
+                            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required

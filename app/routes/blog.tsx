@@ -86,7 +86,7 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
                 <h1 className="text-4xl font-bold mb-4 text-gray-800">{post.title}</h1>
                 <p className="text-sm text-gray-500 mb-6">Last updated: {new Date(post.updatedAt).toLocaleDateString()}</p>
                 <hr className="mb-6" />
-                <div className="markdown-body prose max-w-none min-h-[calc(100vh-300px)]">
+                <div className="markdown-body prose max-w-none min-h-[calc(100vh-350px)]">
                     <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeHighlight]}

@@ -86,6 +86,7 @@ export async function clientAction({ request, params }: Route.ActionArgs) {
             alert("Failed to create/update post");
             return { error: "Failed to process the request" };
         } 
+        alert("Success!");
         if (blogId === "new") return redirect("/");
         return redirect(`/${blogId}`);
     } catch (e) {
@@ -93,6 +94,7 @@ export async function clientAction({ request, params }: Route.ActionArgs) {
         alert("Post Error");
     }
 }
+
 
 export default function Post({
     loaderData
@@ -106,6 +108,28 @@ export default function Post({
     useEffect(() => {
         if (blogId !== "new") { verifyOwner(blogId, navigate); }
     }, [blogId]);
+    
+    const handleDelete = async (blogId: string) => {
+        if (!confirm("Are you sure you want to delete this post?")) { return; }
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/posts/${blogId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            if (!res.ok) {
+                console.error("Failed to delete post");
+                alert("Failed to delete post");
+                return;
+            }
+            alert("Delete successfully!");
+            navigate("/");
+        } catch(e) {
+            console.error(e);
+            alert("Delete Error");
+        }
+    }
 
     if (!post) return <p className="mt-10 text-center text-gray-500">Post not found.</p>;
 
@@ -123,7 +147,7 @@ export default function Post({
             />
             <textarea
                 name="content"
-                className="w-full min-h-[calc(100vh-400px)] p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y"
+                className="w-full min-h-[calc(100vh-500px)] p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y"
                 placeholder="Enter Content..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -137,11 +161,22 @@ export default function Post({
                 >
                     Back
                 </button>
+                <div className="flex items-center gap-2">
+                    {post.id !== "" && (
+                        <button
+                            type="button"
+                            onClick={() => handleDelete(blogId)}
+                            className="px-4 py-2 bg-transparent border text-red-500 font-semibold rounded-md hover:text-red-700 transition-colors cursor-pointer"
+                        >
+                            Delete
+                        </button>
+                    )}
                 <button type="submit"
-                    className="self-end px-6 py-2 bg-blue-500 text-white font-semibold rounded-md shadow hover:bg-blue-600 transition-colors cursor-pointer text-center"
+                        className="self-end px-6 py-2 bg-blue-500 border text-white font-semibold rounded-md shadow hover:bg-blue-600 transition-colors cursor-pointer text-center"
                 >
                     {post.id === "" ? "Create" : "Update"}
                 </button>
+                </div>
             </div>
         </Form>
     );
