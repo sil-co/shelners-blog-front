@@ -13,7 +13,7 @@ export function meta({ }: Route.MetaArgs) {
 
 export async function loader(): Promise<Post[]> {
   const res = await fetch(
-    `http://localhost:8081/api/posts`
+    `${import.meta.env.VITE_API_URL}/posts`
   );
   const posts: Post[] = await res.json();
   return posts;
