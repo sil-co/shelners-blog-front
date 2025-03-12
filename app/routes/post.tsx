@@ -73,11 +73,16 @@ export async function clientAction({ request, params }: Route.ActionArgs) {
             ? `${import.meta.env.VITE_API_URL}/posts`
             : `${import.meta.env.VITE_API_URL}/posts/${blogId}`;
         const method = blogId === "new" ? "POST" : "PUT";
+        // There is a problem when extracting characters on the Java side.
+        // If `Bearer` is included, the POST method will not work.
+        // Therefore, the token is sent as is only when POSTing.
+        const authorization: string = blogId === "new" ? `${localStorage.getItem("token")}` : `Bearer ${localStorage.getItem("token")}`;
         const res = await fetch(url, {
             method,
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                // "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                "Authorization": authorization,
             },
             body: JSON.stringify(postData),
         });
@@ -85,7 +90,7 @@ export async function clientAction({ request, params }: Route.ActionArgs) {
             console.error("Failed to create/update post");
             alert("Failed to create/update post");
             return { error: "Failed to process the request" };
-        } 
+        }
         alert("Success!");
         if (blogId === "new") return redirect("/");
         return redirect(`/${blogId}`);
@@ -104,7 +109,7 @@ export default function Post({
     const [title, setTitle] = useState(post?.title || "");
     const [content, setContent] = useState(post?.content || "");
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         if (blogId !== "new") { verifyOwner(blogId, navigate); }
     }, [blogId]);
@@ -171,11 +176,11 @@ export default function Post({
                             Delete
                         </button>
                     )}
-                <button type="submit"
+                    <button type="submit"
                         className="self-end px-6 py-2 bg-blue-500 border text-white font-semibold rounded-md shadow hover:bg-blue-600 transition-colors cursor-pointer text-center"
-                >
-                    {post.id === "" ? "Create" : "Update"}
-                </button>
+                    >
+                        {post.id === "" ? "Create" : "Update"}
+                    </button>
                 </div>
             </div>
         </Form>
