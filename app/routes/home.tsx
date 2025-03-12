@@ -12,11 +12,16 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export async function loader(): Promise<Post[]> {
-  const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/posts`
-  );
-  const posts: Post[] = await res.json();
-  return posts;
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/posts`
+    );
+    const posts: Post[] = await res.json();
+    return posts;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {

@@ -69,7 +69,6 @@ export async function clientAction({ request, params }: Route.ActionArgs) {
             title: formData.get("title"),
             content: formData.get("content")
         };
-        console.log(postData);
         const url = blogId === "new"
             ? `${import.meta.env.VITE_API_URL}/posts`
             : `${import.meta.env.VITE_API_URL}/posts/${blogId}`;
@@ -87,6 +86,7 @@ export async function clientAction({ request, params }: Route.ActionArgs) {
             alert("Failed to create/update post");
             return { error: "Failed to process the request" };
         } 
+        if (blogId === "new") return redirect("/");
         return redirect(`/${blogId}`);
     } catch (e) {
         console.log("error");
